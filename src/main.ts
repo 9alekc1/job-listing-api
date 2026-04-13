@@ -1,4 +1,5 @@
 import { env } from './config/env';
+import { logger } from './config/logger';
 import { connectPostgres } from './db/postgres';
 import { connectMongo } from './db/mongo';
 import { connectRedis } from './db/redis';
@@ -11,10 +12,10 @@ async function bootstrap() {
     await connectRedis();
 
     app.listen(env.PORT, () => {
-      console.log(`Server running on port ${env.PORT}`);
+      logger.info(`Server running on port ${env.PORT}`);
     });
   } catch (err) {
-    console.error('Failed to start server:', err);
+    logger.error('Failed to start server', { err });
     process.exit(1);
   }
 }

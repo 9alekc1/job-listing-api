@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { logger } from '../config/logger';
 
 interface ServiceError {
   status: number;
@@ -25,6 +26,6 @@ export function errorHandler(
     res.status(err.status).json({ error: err.message });
     return;
   }
-  console.error(err);
+  logger.error('Unhandled error', { err });
   res.status(500).json({ error: 'Internal server error' });
 }

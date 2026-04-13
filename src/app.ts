@@ -1,6 +1,7 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import { errorHandler } from './middleware/errorHandler';
+import { requestLogger } from './middleware/requestLogger';
 import authRoutes from './modules/auth/auth.routes';
 import jobsRoutes from './modules/jobs/jobs.routes';
 import applicationsRoutes from './modules/applications/applications.routes';
@@ -9,6 +10,7 @@ import statsRoutes from './modules/stats/stats.routes';
 const app = express();
 
 app.use(express.json());
+app.use(requestLogger);
 
 app.use(
   rateLimit({
