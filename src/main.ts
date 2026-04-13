@@ -1,10 +1,22 @@
+import { env } from './config/env';
+import { connectPostgres } from './db/postgres';
+import { connectMongo } from './db/mongo';
+import { connectRedis } from './db/redis';
+import app from './app';
 
-import express from 'express';
-const app = express();
+async function bootstrap() {
+  try {
+    await connectPostgres();
+    await connectMongo();
+    await connectRedis();
 
-app.get('/', (req, res) => {
-  res.send('Hello, Worlddddd!');
-});
+    app.listen(env.PORT, () => {
+      console.log(`Server running on port ${env.PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  }
+}
 
-app.listen(3000, () => console.log('Server running on port 3000'));
-
+bootstrap();
